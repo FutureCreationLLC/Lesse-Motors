@@ -1,4 +1,4 @@
-body,html{margin:0;padding:0;font-family:Arial,sans-serif;background:#111;color:#fff;}
+body,html{margin:0;padding:0;font-family:Arial,sans-serif;background:#111;color:#ef;}
 nav{position:fixed;width:100%;top:0;left:0;background:rgba(0,0,0,0.8);display:flex;justify-content:space-around;padding:15px 0;z-index:1000;}
 nav a{color:#fff;text-decoration:none;font-weight:bold;transition:color 0.3s;}
 nav a:hover{color:#ffcc00;}
