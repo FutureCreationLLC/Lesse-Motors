@@ -5,65 +5,60 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LESSE Motors - Gallery</title>
 <link rel="stylesheet" href="css/style.css">
-<link rel="icon" type="image/png" href="assets/logo-le.svg">
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/main.js" defer></script>
+<style>
+body, html{margin:0;padding:0;font-family:Arial,sans-serif;background:#111;color:#fff;}
+nav{position:fixed;width:100%;top:0;left:0;background:rgba(0,0,0,0.8);display:flex;justify-content:space-around;padding:15px 0;z-index:1000;}
+nav a{color:#fff;text-decoration:none;font-weight:bold;transition:color 0.3s;}
+nav a:hover{color:#ffcc00;}
+.container{padding-top:80px;max-width:1200px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;}
+img{width:100%;border-radius:10px;cursor:pointer;}
+#modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:10000;}
+#modal img{max-width:90%;max-height:90%;border-radius:10px;}
+#modal span{position:absolute;top:20px;right:30px;font-size:30px;cursor:pointer;color:#ffcc00;}
+</style>
 </head>
 <body>
 
 <nav>
-  <a href="index.html">Home</a>
-  <a href="models.html">Models</a>
-  <a href="gallery.html">Gallery</a>
-  <a href="preorder.html">Pre-Order</a>
-  <a href="contact.html">Contact</a>
-  <a href="admin/login.html">Admin</a>
+<a href="index.html">Home</a>
+<a href="models.html">Models</a>
+<a href="gallery.html">Gallery</a>
+<a href="preorder.html">Pre-Order</a>
+<a href="contact.html">Contact</a>
 </nav>
 
-<div class="page-wrapper" style="padding-top:90px; max-width:1200px; margin:auto;">
+<h1 style="text-align:center;margin-top:100px;">Gallery</h1>
+<div class="container" id="galleryContainer"></div>
 
-  <h1 style="text-align:center;color:#ffcc00;margin-bottom:30px;">LESSE Motors Gallery</h1>
-
-  <div id="galleryContainer" class="image-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;"></div>
-
+<!-- Modal -->
+<div id="modal" onclick="this.style.display='none'">
+    <span>&times;</span>
+    <img id="modalImg">
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-<script src="js/firebase-config.js"></script>
-<script src="js/main.js"></script>
 <script>
-const galleryContainer = document.getElementById('galleryContainer');
-const carTypes = ['pragya','sedan','bus','suv','pickup','van','cargo','mini-truck','luxury','coupe'];
-
-carTypes.forEach(type=>{
-    const typeRef = storageRef.child(type);
-    typeRef.listAll().then(res=>{
-        res.items.forEach(itemRef=>{
-            itemRef.getDownloadURL().then(url=>{
-                const card = document.createElement('div');
-                card.className='gallery-card';
-                card.style.background='#222';
-                card.style.borderRadius='10px';
-                card.style.padding='10px';
-                card.style.textAlign='center';
-                card.style.border='1px solid #333';
-
-                const img = document.createElement('img');
-                img.src = url;
-                img.style.width='100%';
-                img.style.borderRadius='10px';
-
-                const title = document.createElement('div');
-                title.textContent = type.toUpperCase();
-                title.style.color='#ffcc00';
-                title.style.marginTop='5px';
-                title.style.fontWeight='bold';
-
-                card.appendChild(img);
-                card.appendChild(title);
-                galleryContainer.appendChild(card);
+document.addEventListener("DOMContentLoaded", ()=>{
+    const container = document.getElementById("galleryContainer");
+    firebase.firestore().collection("gallery")
+        .orderBy("timestamp","desc")
+        .get()
+        .then(snapshot=>{
+            snapshot.forEach(doc=>{
+                const data = doc.data();
+                const img = document.createElement("img");
+                img.src = data.image;
+                img.onclick = ()=>{
+                    document.getElementById("modal").style.display="flex";
+                    document.getElementById("modalImg").src = data.image;
+                };
+                container.appendChild(img);
             });
         });
-    });
 });
 </script>
 
