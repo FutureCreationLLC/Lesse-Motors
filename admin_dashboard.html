@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard - LESSE Motors</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#111;color:#fff;}
+header{background:#222;padding:20px;text-align:center;color:#ffcc00;font-weight:bold;}
+.container{padding:20px;max-width:600px;margin:auto;}
+input,select,button{width:100%;padding:10px;margin:10px 0;border-radius:5px;border:none;}
+button{background:#ffcc00;color:#000;font-weight:bold;cursor:pointer;}
+.preview img{width:100px;margin:5px;border-radius:5px;}
+</style>
+</head>
+<body>
+<header>LESSE Motors - Admin Dashboard</header>
+<div class="container">
+<select id="carType">
+  <option value="">Select Car Type</option>
+  <option value="pragya">Pragya</option>
+  <option value="sedan">Sedan</option>
+  <option value="bus">Bus</option>
+  <option value="backgrounds">Background</option>
+</select>
+<input type="file" id="fileInput" multiple>
+<button onclick="uploadFiles()">Upload Images</button>
+<div class="preview" id="preview"></div>
+<script>
+function uploadFiles(){
+    const type=document.getElementById('carType').value;
+    const files=document.getElementById('fileInput').files;
+    if(!type){alert('Select car type');return;}
+    if(files.length===0){alert('Select files');return;}
+    const formData=new FormData();
+    for(let i=0;i<files.length;i++){formData.append('files[]',files[i]);}
+    formData.append('type',type);
+    fetch('../backend/upload.php',{method:'POST',body:formData})
+    .then(r=>r.text())
+    .then(res=>{
+        alert(res);
+        document.getElementById('preview').innerHTML='';
+        for(let i=0;i<files.length;i++){
+            const img=document.createElement('img');
+            img.src=URL.createObjectURL(files[i]);
+            document.getElementById('preview').appendChild(img);
+        }
+    }).catch(e=>alert('Upload failed'));
+}
+</script>
+</div>
+</body>
+</html>
