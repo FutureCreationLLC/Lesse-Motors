@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LESSE Motors - About</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+body{background:#111;color:#fff;font-family:Arial;padding:20px;}
+h1{text-align:center;color:#ffcc00;}
+p{max-width:800px;margin:auto;font-size:18px;line-height:1.6;}
+</style>
+</head>
+<body>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="models.html">Models</a>
+<a href="gallery.html">Gallery</a>
+<a href="preorder.html">Pre-Order</a>
+<a href="contact.html">Contact</a>
+</nav>
+
+<h1>About LESSE Motors</h1>
+<p>
+LESSE Motors is a premium car company delivering high-quality petrol vehicles including sedans, buses, Pragya models, and more. Our mission is to provide reliable, stylish, and affordable cars for all types of customers. Every car is handcrafted with precision and backed by exceptional customer service. Pre-order your car today and experience innovation, performance, and luxury combined.
+</p>
+
+</body>
+</html>
