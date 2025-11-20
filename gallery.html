@@ -1,91 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LESSE Motors - Gallery</title>
 <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    <a class="logo" href="index.html"><img src="assets/logo-le-sunshine.svg" alt="LESSE"></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="models.html">Models</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="preorder.html">Pre-Order</a>
+      <a href="contact.html">Contact</a>
+      <a href="admin/login.html">Admin</a>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <h1 style="color:var(--accent)">Gallery</h1>
+  <div id="galleryGrid" class="gallery-grid"></div>
+  <div style="text-align:center;margin-top:18px">
+    <button id="prevBtn" class="btn" disabled>Prev</button>
+    <button id="nextBtn" class="btn" disabled>Next</button>
+  </div>
+</div>
+<div id="modal" class="modal" onclick="this.style.display='none'"><img id="modalImg"></div>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 <script src="js/firebase-config.js"></script>
-<script src="js/main.js" defer></script>
-<style>
-body,html{margin:0;padding:0;font-family:Arial,sans-serif;background:#111;color:#fff;}
-nav{position:fixed;width:100%;top:0;left:0;background:rgba(0,0,0,0.8);display:flex;justify-content:space-around;padding:15px 0;z-index:1000;}
-nav a{color:#fff;text-decoration:none;font-weight:bold;transition:color 0.3s;}
-nav a:hover{color:#ffcc00;}
-.container{padding-top:80px;max-width:1200px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;}
-img{width:100%;border-radius:10px;cursor:pointer;}
-#modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:10000;}
-#modal img{max-width:90%;max-height:90%;border-radius:10px;}
-#modal span{position:absolute;top:20px;right:30px;font-size:30px;cursor:pointer;color:#ffcc00;}
-.pagination{text-align:center;margin:20px;}
-.pagination button{padding:10px 20px;margin:5px;background:#ffcc00;border:none;color:#111;font-weight:bold;border-radius:5px;cursor:pointer;}
-.pagination button:disabled{opacity:0.5;cursor:default;}
-</style>
-</head>
-<body>
-
-<nav>
- <a href="index.html" class="logo">
-<img src="assets/logo-le.svg" alt="LESSE Motors Logo">
-    </a> 
-<a href="index.html">Home</a>
-<a href="models.html">Models</a>
-<a href="gallery.html">Gallery</a>
-<a href="preorder.html">Pre-Order</a>
-<a href="contact.html">Contact</a>
-<a href="about.html">About</a>
-<a href="admin/login.html">Admin</a>
-</nav>
-
-<h1 style="text-align:center;margin-top:100px;">Gallery</h1>
-<div class="container" id="galleryContainer"></div>
-
-<div class="pagination">
-<button id="prevBtn" disabled>Prev</button>
-<button id="nextBtn" disabled>Next</button>
-</div>
-
-<!-- Modal -->
-<div id="modal" onclick="this.style.display='none'">
-    <span>&times;</span>
-    <img id="modalImg">
-</div>
-
+<script src="js/main.js"></script>
 <script>
-let galleryData = [];
-let currentPage = 0;
-const perPage = 12;
-const container = document.getElementById("galleryContainer");
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
-
-function renderPage(){
-    container.innerHTML="";
-    const start = currentPage * perPage;
-    const end = start + perPage;
-    galleryData.slice(start,end).forEach(imgURL=>{
-        const img = document.createElement("img");
-        img.src = imgURL;
-        img.onclick = ()=>{document.getElementById("modal").style.display="flex";document.getElementById("modalImg").src=imgURL;}
-        container.appendChild(img);
-    });
-    prevBtn.disabled = currentPage===0;
-    nextBtn.disabled = end >= galleryData.length;
-}
-
-prevBtn.onclick = ()=>{ if(currentPage>0){currentPage--; renderPage();} };
-nextBtn.onclick = ()=>{ if((currentPage+1)*perPage < galleryData.length){currentPage++; renderPage();} };
-
-// Fetch all gallery images from Firestore
-firebase.firestore().collection("gallery").orderBy("timestamp","desc").get()
-.then(snapshot=>{
-    snapshot.forEach(doc=>{ galleryData.push(doc.data().image); });
-    renderPage();
-});
+setupGallery();
 </script>
-
 </body>
 </html>
