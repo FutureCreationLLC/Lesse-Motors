@@ -1,79 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LESSE Motors - Home</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LESSE Motors</title>
+<meta name="description" content="LESSE Motors — quality petrol vehicles. Pre-order today.">
+<meta property="og:title" content="LESSE Motors">
+<meta property="og:description" content="LESSE Motors — quality petrol vehicles. Pre-order today.">
+<meta property="og:image" content="assets/logo-le-sunshine.svg">
+<link rel="icon" href="assets/logo-le-sunshine.svg">
 <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    <a class="logo" href="index.html"><img src="assets/logo-le-sunshine.svg" alt="LESSE Motors"></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="models.html">Models</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="preorder.html">Pre-Order</a>
+      <a href="contact.html">Contact</a>
+      <a href="admin/login.html">Admin</a>
+    </div>
+  </div>
+</nav>
+<section class="hero">
+  <img id="heroImage" class="hero-bg" src="assets/logo-le-sunshine.svg" alt="">
+  <div class="hero-content">
+    <div class="h1">LESSE Motors</div>
+    <div class="h2">Premium petrol vehicles — Pragya, Sedan, Bus, SUV and more.</div>
+    <a class="btn" href="preorder.html">Pre-Order Now</a>
+  </div>
+</section>
+<div class="container">
+  <h2 style="color:var(--accent);margin-bottom:12px">Featured Models</h2>
+  <div id="typesGrid" class="grid"></div>
+  <h2 style="color:var(--accent);margin-top:36px">Latest Gallery</h2>
+  <div id="homeGallery" class="gallery-grid" style="margin-top:12px"></div>
+</div>
+<div class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div style="font-weight:700;color:#fff">About</div>
+      <p class="small" style="max-width:820px;margin:12px auto 8px;text-align:center">LESSE Motors is a premium car company building petrol vehicles for reliability, performance and style. We accept pre-orders and provide full customer support.</p>
+    </div>
+    <div class="trusted">
+      <img src="assets/logo-le-sunshine.svg" alt="partner">
+      <img src="assets/logo-le-sunshine.svg" alt="partner">
+      <img src="assets/logo-le-sunshine.svg" alt="partner">
+      <img src="assets/logo-le-sunshine.svg" alt="partner">
+    </div>
+    <div class="copy">(c) 2025 LESSE Motors</div>
+  </div>
+</div>
+<div id="modal" class="modal" onclick="this.style.display='none'"><img id="modalImg"></div>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 <script src="js/firebase-config.js"></script>
-<script src="js/main.js" defer></script>
-
-<style>
-body, html{margin:0;padding:0;font-family:Arial,sans-serif;background:#111;color:#fff;height:100%;}
-nav{position:fixed;width:100%;top:0;left:0;background:rgba(0,0,0,0.7);display:flex;justify-content:space-around;padding:15px 0;z-index:1000;}
-nav a{color:#fff;text-decoration:none;font-weight:bold;transition:color 0.3s;}
-nav a:hover{color:#ffcc00;}
-.hero{height:100vh;width:100%;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.hero img{position:absolute;width:100%;height:100%;object-fit:cover;z-index:-1;transition:opacity 1s;}
-.hero h1{color:#ffcc00;font-size:48px;text-align:center;}
-.cta{position:absolute;bottom:50px;width:100%;text-align:center;}
-.cta a{padding:15px 30px;background:#ffcc00;color:#111;font-weight:bold;border-radius:8px;text-decoration:none;font-size:20px;}
-</style>
-</head>
-<body>
-
-<nav>
-<a href="index.html" class="logo">
-<img src="assets/logo-le.svg" alt="LESSE Motors Logo">
-</a>
-<a href="index.html">Home</a>
-<a href="models.html">Models</a>
-<a href="gallery.html">Gallery</a>
-<a href="preorder.html">Pre-Order</a>
-<a href="contact.html">Contact</a>
-<a href="admin/login.html">Admin</a>
-</nav>
-
-<div class="hero">
-<h1>LESSE Motors</h1>
-<div class="cta"><a href="preorder.html">Pre-Order Now</a></div>
-</div>
-
+<script src="js/main.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", ()=>{
-    const hero = document.querySelector(".hero");
-    let backgrounds = [];
-
-    // Fetch background from Firestore settings
-    firebase.firestore().collection("website").doc("settings").get()
-        .then(doc=>{
-            if(doc.exists && doc.data().background){
-                backgrounds.push(doc.data().background);
-            } else {
-                backgrounds.push('assets/logo-le-sunshine.svg'); // fallback
-            }
-
-            let index=0;
-            const imgEl = document.createElement("img");
-            hero.appendChild(imgEl);
-
-            function showNext(){
-                imgEl.style.opacity=0;
-                setTimeout(()=>{
-                    imgEl.src = backgrounds[index];
-                    imgEl.style.opacity=1;
-                    index = (index+1) % backgrounds.length;
-                },500);
-            }
-
-            showNext();
-            setInterval(showNext,5000);
-        });
-});
+loadHomepage();
 </script>
-
 </body>
 </html>
